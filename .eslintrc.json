@@ -13,6 +13,8 @@
     "node_modules"
   ],
   "rules": {
+    "simple-import-sort/imports": 2,
+    "simple-import-sort/exports": 2,
     "prettier/prettier": "error"
   },
   "env": {
@@ -21,7 +23,8 @@
     "jest": true
   },
   "extends": [
-    "airbnb-typescript",
+    "airbnb-base",
+    "airbnb-typescript/base",
     "plugin:jest/recommended",
     "prettier"
   ],
@@ -30,6 +33,7 @@
     "SharedArrayBuffer": "readonly"
   },
   "plugins": [
+    "import",
     "@typescript-eslint",
     "simple-import-sort",
     "jest",

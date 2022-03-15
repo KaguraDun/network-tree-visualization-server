@@ -1,10 +1,9 @@
 {
   "name": "pointing-poker-server",
   "scripts": {
-    "start": "node build/index.js",
-    "start:dev": "nodemon --exec babel-node src/index.js",
-    "build-babel": "babel -d ./build src -s",
-    "build": "rimraf ./build && npm run build-babel",
+    "start": "node build/app.js",
+    "start:dev": "nodemon src/app.ts",
+    "build": "rimraf ./build && tsc --noEmit false",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
     "test": "jest",

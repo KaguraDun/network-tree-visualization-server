@@ -4,7 +4,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx",
     "lib": [
       "dom",
       "dom.iterable",
@@ -12,6 +11,7 @@
     ],
     "module": "CommonJS",
     "moduleResolution": "node",
+    "outDir": "./build",
     "noEmit": true,
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -19,19 +19,9 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "target": "es5",
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ],
     "baseUrl": ".",
-    "paths": {
-      "@/events/*": [
-        "src/events/*"
-      ]
-    }
   },
 
   "include": [

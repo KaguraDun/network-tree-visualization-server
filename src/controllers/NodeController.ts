@@ -20,7 +20,7 @@ class NodeController {
     try {
       const { id } = req.params;
       const { rows: children } = await db.query(
-        'SELECT * from nodes where parentid = $1',
+        'SELECT * from nodes where parentID = $1',
         [id]
       );
 

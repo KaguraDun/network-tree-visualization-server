@@ -3,6 +3,18 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
+  static async getRootNode(req: Request, res: Response) {
+    try {
+      const { rows: rootNode } = await db.query(
+        'SELECT * from nodes where parentID IS NULL'
+      );
+
+      res.json(rootNode);
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
 
   static async addNode(req: Request, res: Response) {
     try {

@@ -16,6 +16,21 @@ class NodeController {
     }
   }
 
+  static async getChildNodes(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { rows: children } = await db.query(
+        'SELECT * from nodes where parentid = $1',
+        [id]
+      );
+
+      res.json(children);
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
+
   static async addNode(req: Request, res: Response) {
     try {
       const { parentID, name, ip, port } = req.body;

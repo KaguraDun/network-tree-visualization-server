@@ -22,8 +22,13 @@ class NodeController {
       const { rows: rootNode } = await db.query(
         'SELECT * from nodes where parentID IS NULL'
       );
+      const hasChildren = await NodeController.hasChildren(rootNode[0].id);
+      const nodeWithHasChildren = rootNode.map((node) => ({
+        ...node,
+        hasChildren,
+      }));
 
-      res.json(rootNode);
+      res.json(nodeWithHasChildren);
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });

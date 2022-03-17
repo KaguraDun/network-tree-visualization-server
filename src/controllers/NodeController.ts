@@ -3,6 +3,11 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
+  static async hasChildren(id: string) {
+    const children = await NodeController.getChildren(id);
+    return children.length > 0;
+  }
+
   static async getChildren(id: string) {
     const { rows: children } = await db.query(
       'SELECT * from nodes where parentID = $1',

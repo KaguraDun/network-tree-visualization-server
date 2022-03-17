@@ -3,6 +3,15 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
+  static async getChildren(id: string) {
+    const { rows: children } = await db.query(
+      'SELECT * from nodes where parentID = $1',
+      [id]
+    );
+
+    return children;
+  }
+
   static async getRootNode(req: Request, res: Response) {
     try {
       const { rows: rootNode } = await db.query(
@@ -19,10 +28,7 @@ class NodeController {
   static async getChildNodes(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { rows: children } = await db.query(
-        'SELECT * from nodes where parentID = $1',
-        [id]
-      );
+      const children = NodeController.getChildren(id);
 
       res.json(children);
     } catch (error: unknown) {

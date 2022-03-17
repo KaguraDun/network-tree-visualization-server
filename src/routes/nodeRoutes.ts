@@ -10,4 +10,6 @@ router.get('/node/:id/children', NodeController.getChildNodes);
 router.post('/node', NodeController.addNode);
 router.put('/node/:id/change_name', NodeController.changeNodeName);
 router.put('/node/:id/change_ip', NodeController.changeNodeIP);
+router.put('/node/:id/change_port', NodeController.changeNodePort);
+
 export default router;

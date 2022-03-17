@@ -71,6 +71,20 @@ class NodeController {
       res.status(500).send({ message: error });
     }
   }
+
+  static async changeNodePort(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { port } = req.body;
+
+      await db.query('UPDATE nodes set port = $1 where id = $2', [port, id]);
+
+      res.status(201).send({ message: 'Node port changed' });
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
 }
 
 export default NodeController;

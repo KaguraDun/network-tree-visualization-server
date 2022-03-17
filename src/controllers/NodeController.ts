@@ -57,6 +57,20 @@ class NodeController {
       res.status(500).send({ message: error });
     }
   }
+
+  static async changeNodeIP(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { ip } = req.body;
+
+      await db.query('UPDATE nodes set ip = $1 where id = $2', [ip, id]);
+
+      res.status(201).send({ message: 'Node ip changed' });
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
 }
 
 export default NodeController;

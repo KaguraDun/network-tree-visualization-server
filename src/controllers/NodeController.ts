@@ -44,6 +44,19 @@ class NodeController {
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });
+  static async changeNodeName(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+
+      await db.query('UPDATE nodes set name = $1 where id = $2', [name, id]);
+
+      res.status(201).send({ message: 'Node renamed' });
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
 }
 
 export default NodeController;

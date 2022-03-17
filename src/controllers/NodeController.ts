@@ -44,6 +44,8 @@ class NodeController {
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });
+    }
+  }
   static async changeNodeName(req: Request, res: Response) {
     try {
       const { id } = req.params;

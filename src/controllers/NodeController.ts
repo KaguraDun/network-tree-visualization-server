@@ -47,16 +47,46 @@ class NodeController {
     }
   }
 
+  static async getParentLevel(parentID: number) {
+    const { rows: parentLevel } = await db.query(
+      'SELECT level FROM nodes WHERE id = $1',
+      [parentID]
+    );
+    const { level } = parentLevel[0];
+
+    return level;
+  }
+
   static async addNode(req: Request, res: Response) {
     try {
       const { parentID, name, ip, port } = req.body;
 
-      await db.query(
-        'INSERT INTO nodes (parentID, name, ip, port) VALUES ($1, $2, $3, $4)',
-        [parentID, name, ip, port]
+      if (!name || !ip || !port) {
+        console.log(name, ip, port);
+        throw Error('All fields: name, ip and port required!');
+      }
+      let level;
+      if (parentID === null) {
+        level = 0;
+      } else {
+        const parentLevel = await NodeController.getParentLevel(parentID);
+        console.log(parentID, parentLevel);
+        if (typeof parentLevel === 'number') {
+          level = parentLevel + 1;
+        }
+      }
+
+      const { rows: newNode } = await db.query(
+        'INSERT INTO nodes (parentID, name, ip, port, level) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [parentID, name, ip, port, level]
       );
 
-      res.status(201).send({ message: 'Node created' });
+      const combinedArray = newNode.map((node) => ({
+        ...node,
+        hasChildren: false,
+      }));
+
+      res.json(combinedArray);
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });

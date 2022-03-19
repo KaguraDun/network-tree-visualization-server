@@ -10,7 +10,7 @@ class NodeController {
 
   static async getChildren(id: string) {
     const { rows: children } = await db.query(
-      'SELECT * from nodes where parentID = $1',
+      'SELECT * from nodes where parent_id = $1',
       [id]
     );
 
@@ -20,7 +20,7 @@ class NodeController {
   static async getRootNode(req: Request, res: Response) {
     try {
       const { rows: rootNode } = await db.query(
-        'SELECT * from nodes where parentID IS NULL'
+        'SELECT * from nodes where parent_id IS NULL'
       );
       const hasChildren = await NodeController.hasChildren(rootNode[0].id);
       const nodeWithHasChildren = rootNode.map((node) => ({
@@ -77,7 +77,7 @@ class NodeController {
       }
 
       const { rows: newNode } = await db.query(
-        'INSERT INTO nodes (parentID, name, ip, port, level) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        'INSERT INTO nodes (parent_id, name, ip, port, level) VALUES ($1, $2, $3, $4, $5) RETURNING *',
         [parentID, name, ip, port, level]
       );
 

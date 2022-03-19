@@ -92,6 +92,23 @@ class NodeController {
       res.status(500).send({ message: error });
     }
   }
+
+  static async removeNode(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const { rows: removedNodes } = await db.query(
+        'DELETE from nodes where id=$1 RETURNING *',
+        [id]
+      );
+
+      res.json(removedNodes);
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ message: error });
+    }
+  }
+
   static async changeNodeName(req: Request, res: Response) {
     try {
       const { id } = req.params;

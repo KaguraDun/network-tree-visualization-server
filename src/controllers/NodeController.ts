@@ -22,6 +22,12 @@ class NodeController {
       const { rows: rootNode } = await db.query(
         'SELECT * from nodes where parent_id IS NULL'
       );
+
+      if (!rootNode[0]) {
+        res.status(404).send({ status: 404, message: 'Nodes not found' });
+        return;
+      }
+
       const hasChildren = await NodeController.hasChildren(rootNode[0].id);
       const nodeWithHasChildren = rootNode.map((node) => ({
         ...node,

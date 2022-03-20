@@ -106,49 +106,24 @@ class NodeController {
       res.status(200).send({ status: 200, message: 'Node deleted' });
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ message: error });
+      res.status(500).send({ status: 500, message: error });
     }
   }
 
-  static async changeNodeName(req: Request, res: Response) {
+  static async updateNodeData(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { name } = req.body;
+      const { name, ip, port } = req.body;
 
-      await db.query('UPDATE nodes set name = $1 where id = $2', [name, id]);
+      await db.query(
+        'UPDATE nodes SET name = $1, ip = $2, port = $3 where id = $4',
+        [name, ip, port, id]
+      );
 
-      res.status(201).send({ message: 'Node renamed' });
+      res.status(201).send({ status: 201, message: 'Node info updated' });
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ message: error });
-    }
-  }
-
-  static async changeNodeIP(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const { ip } = req.body;
-
-      await db.query('UPDATE nodes set ip = $1 where id = $2', [ip, id]);
-
-      res.status(201).send({ message: 'Node ip changed' });
-    } catch (error: unknown) {
-      console.error(error);
-      res.status(500).send({ message: error });
-    }
-  }
-
-  static async changeNodePort(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const { port } = req.body;
-
-      await db.query('UPDATE nodes set port = $1 where id = $2', [port, id]);
-
-      res.status(201).send({ message: 'Node port changed' });
-    } catch (error: unknown) {
-      console.error(error);
-      res.status(500).send({ message: error });
+      res.status(500).send({ status: 500, message: error });
     }
   }
 }

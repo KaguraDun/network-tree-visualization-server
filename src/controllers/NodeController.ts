@@ -53,6 +53,14 @@ class NodeController {
     }
   }
 
+  static async getIsRootNodeExist() {
+    const { rows: rootNode } = await db.query(
+      'SELECT * from nodes where parent_id IS NULL'
+    );
+
+    return rootNode.length === 1;
+  }
+
   static async addNode(req: Request, res: Response) {
     try {
       const { parentID, name, ip, port } = req.body;
@@ -60,6 +68,16 @@ class NodeController {
       if (!name || !ip || !port) {
         console.log(name, ip, port);
         throw Error('All fields: name, ip and port required!');
+      }
+
+      if (parentID === null) {
+        const isRootNodeExist = await NodeController.getIsRootNodeExist();
+        if (isRootNodeExist) {
+          res
+            .status(204)
+            .send({ status: 204, message: 'Root node already exist' });
+          return;
+        }
       }
 
       const { rows: newNode } = await db.query(

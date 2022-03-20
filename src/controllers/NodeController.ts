@@ -77,12 +77,9 @@ class NodeController {
     try {
       const { id } = req.params;
 
-      const { rows: removedNodes } = await db.query(
-        'DELETE from nodes where id=$1 RETURNING *',
-        [id]
-      );
+      await db.query('DELETE from nodes where id=$1', [id]);
 
-      res.json(removedNodes);
+      res.status(200).send({ status: 200, message: 'Node deleted' });
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });

@@ -47,16 +47,6 @@ class NodeController {
     }
   }
 
-  static async getParentLevel(parentID: number) {
-    const { rows: parentLevel } = await db.query(
-      'SELECT level FROM nodes WHERE id = $1',
-      [parentID]
-    );
-    const { level } = parentLevel[0];
-
-    return level;
-  }
-
   static async addNode(req: Request, res: Response) {
     try {
       const { parentID, name, ip, port } = req.body;
@@ -65,20 +55,10 @@ class NodeController {
         console.log(name, ip, port);
         throw Error('All fields: name, ip and port required!');
       }
-      let level;
-      if (parentID === null) {
-        level = 0;
-      } else {
-        const parentLevel = await NodeController.getParentLevel(parentID);
-        console.log(parentID, parentLevel);
-        if (typeof parentLevel === 'number') {
-          level = parentLevel + 1;
-        }
-      }
 
       const { rows: newNode } = await db.query(
-        'INSERT INTO nodes (parent_id, name, ip, port, level) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [parentID, name, ip, port, level]
+        'INSERT INTO nodes (parent_id, name, ip, port) VALUES ($1, $2, $3, $4) RETURNING *',
+        [parentID, name, ip, port]
       );
 
       const combinedArray = newNode.map((node) => ({

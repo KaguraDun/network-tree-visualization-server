@@ -39,7 +39,7 @@ class NodeController {
       res.json(nodeWithHasChildren);
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ message: error });
+      res.status(500).send({ status: 500, message: error });
     }
   }
 
@@ -58,7 +58,7 @@ class NodeController {
       res.json(withHasChildren);
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ message: error });
+      res.status(500).send({ status: 500, message: error });
     }
   }
 
@@ -102,7 +102,7 @@ class NodeController {
       res.json(combinedArray);
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ message: error });
+      res.status(500).send({ status: 500, message: error });
     }
   }
 

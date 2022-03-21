@@ -5,6 +5,7 @@ import db from '../db/connectDB';
 class NodeController {
   static async hasChildren(id: string) {
     const children = await NodeController.getChildren(id);
+
     return children.length > 0;
   }
 
@@ -29,6 +30,7 @@ class NodeController {
       }
 
       const hasChildren = await NodeController.hasChildren(rootNode[0].id);
+
       const nodeWithHasChildren = rootNode.map((node) => ({
         ...node,
         hasChildren,
@@ -44,9 +46,16 @@ class NodeController {
   static async getChildNodes(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const children = NodeController.getChildren(id);
+      const children = await NodeController.getChildren(id);
 
-      res.json(children);
+      const withHasChildren = await Promise.all(
+        children.map(async (child) => {
+          const hasChildren = await NodeController.hasChildren(child.id);
+          return { ...child, hasChildren };
+        })
+      );
+
+      res.json(withHasChildren);
     } catch (error: unknown) {
       console.error(error);
       res.status(500).send({ message: error });

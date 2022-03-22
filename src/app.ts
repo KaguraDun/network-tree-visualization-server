@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 
+import NodeController from './controllers/NodeController';
 import router from './routes/nodeRoutes';
 
 const port = process.env.PORT || 3000;
@@ -15,3 +16,5 @@ app.use('/api', router);
 app.listen(port, () => {
   console.log(`Server run at ${port}`);
 });
+
+NodeController.createNodesTable();

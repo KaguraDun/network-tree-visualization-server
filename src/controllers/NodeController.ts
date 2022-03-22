@@ -3,6 +3,21 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
+  static async createNodesTable() {
+    await db.query(
+      `create TABLE IF NOT EXISTS nodes(
+        id SERIAL PRIMARY KEY,
+        parent_id INTEGER ,
+        name VARCHAR(255) NOT NULL,
+        ip varchar(15) NOT NULL,
+        port SMALLINT NOT NULL,
+        FOREIGN KEY (parent_id) 
+        REFERENCES nodes (id) 
+        ON DELETE CASCADE
+      )`
+    );
+  }
+
   static async hasChildren(id: string) {
     const children = await NodeController.getChildren(id);
 

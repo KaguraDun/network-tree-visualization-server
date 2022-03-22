@@ -3,9 +3,10 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
-  static async createNodesTable() {
-    await db.query(
-      `create TABLE IF NOT EXISTS nodes(
+  static async createNodesTable(req: Request, res: Response) {
+    try {
+      await db.query(
+        `create TABLE IF NOT EXISTS nodes(
         id SERIAL PRIMARY KEY,
         parent_id INTEGER ,
         name VARCHAR(255) NOT NULL,
@@ -15,22 +16,40 @@ class NodeController {
         REFERENCES nodes (id) 
         ON DELETE CASCADE
       )`
-    );
+      );
+    } catch (error: unknown) {
+      console.error(error);
+      res.status(500).send({ status: 500, message: error });
+    }
   }
 
   static async hasChildren(id: string) {
-    const children = await NodeController.getChildren(id);
+    try {
+      const children = await NodeController.getChildren(id);
 
-    return children.length > 0;
+      if (children === undefined) {
+        throw Error(`Can't get children for node ${id}`);
+      }
+
+      return children.length > 0;
+    } catch (error: unknown) {
+      console.error(error);
+      return undefined;
+    }
   }
 
   static async getChildren(id: string) {
-    const { rows: children } = await db.query(
-      'SELECT * from nodes where parent_id = $1',
-      [id]
-    );
+    try {
+      const { rows: children } = await db.query(
+        'SELECT * from nodes where parent_id = $1',
+        [id]
+      );
 
-    return children;
+      return children;
+    } catch (error: unknown) {
+      console.error(error);
+      return undefined;
+    }
   }
 
   static async getRootNode(req: Request, res: Response) {
@@ -62,6 +81,10 @@ class NodeController {
     try {
       const { id } = req.params;
       const children = await NodeController.getChildren(id);
+
+      if (children === undefined) {
+        throw Error(`Can't get children for node ${id}`);
+      }
 
       const withHasChildren = await Promise.all(
         children.map(async (child) => {

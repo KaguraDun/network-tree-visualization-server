@@ -1,6 +1,8 @@
 # Network tree visualization server
 Node.js, Express, PostgreSQL, TypeScript
 
+[Репозиторий клиентского приложения](https://github.com/KaguraDun/network-tree-visualization-client)
+
 Сервер с базой данных расположен на heroku и доступен через api. Для локального тестирования требуется создать базу данных с такими параметрами:
 
 ```bash
@@ -18,10 +20,10 @@ const db = new pg.Pool(pgConnect[Mode.development]);
 ```
 
 ## Структура базы данных
-| id: primary-key | parent_id: foreign-key | name      | ip    | port |  
-|-----------------|------------------------|-----------|-------|------|
-|0                |null                    |root       |0.0.0.0|8081  |
-|1                |0                       |root-node  |0.0.0.0|8081  |   
+| id: primary-key | parent_id: foreign-key | name        | ip    | port |  
+|-----------------|------------------------|-------------|-------|------|
+|0                |null                    |root         |0.0.0.0|8081  |
+|1                |0                       |root-children|0.0.0.0|8081  |   
 
 ## Апи:
 URL: https://network-tree-visualization.herokuapp.com/api/

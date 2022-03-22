@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import db from '../db/connectDB';
 
 class NodeController {
-  static async createNodesTable(req: Request, res: Response) {
+  static async createNodesTable() {
     try {
       await db.query(
         `create TABLE IF NOT EXISTS nodes(
@@ -19,7 +19,6 @@ class NodeController {
       );
     } catch (error: unknown) {
       console.error(error);
-      res.status(500).send({ status: 500, message: error });
     }
   }
 

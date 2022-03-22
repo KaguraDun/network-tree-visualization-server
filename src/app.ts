@@ -1,5 +1,6 @@
 import cors from 'cors';
-import express from 'express';
+import express, { Request, Response } from 'express';
+import listEndpoints from 'express-list-endpoints';
 import morgan from 'morgan';
 
 import NodeController from './controllers/NodeController';
@@ -16,5 +17,7 @@ app.use('/api', router);
 app.listen(port, () => {
   console.log(`Server run at ${port}`);
 });
+
+router.get('', (req: Request, res: Response) => res.json(listEndpoints(app)));
 
 NodeController.createNodesTable();

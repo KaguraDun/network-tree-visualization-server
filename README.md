@@ -58,7 +58,7 @@ npm run start:dev
 npm run build
 npm run start
 ```
-### Production Билд
+### Production сборка
 ```bash
 npm run build
 ```
@@ -74,10 +74,10 @@ npm run lint:fix
 ## Зависимости
 *  npm : 8.3.1
 *  node : 16.14.0
-*  @babel/runtime  :   ^7.15.4  ,
-*  cors  :   ^2.8.5  ,
-*  express  :   ^4.17.1  ,
-*  express-list-endpoints  :   ^6.0.0  ,
-*  morgan  :   ^1.10.0  ,
-*  pg  :   ^8.7.3  ,
-*  rimraf  :   ^3.0.2  
+*  @babel/runtime  :   ^7.15.4
+*  cors  :   ^2.8.5
+*  express  :   ^4.17.1
+*  express-list-endpoints  :   ^6.0.0
+*  morgan  :   ^1.10.0
+*  pg  :   ^8.7.3
+*  rimraf  :   ^3.0.2
